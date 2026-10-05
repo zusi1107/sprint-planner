@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint Planner</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">S</span><span>Sprint Planner <small>WORKSHOP</small></span></div>
+    <span class="demo-badge">MOCK JIRA DATA</span>
+  </header>
+  <main class="workspace">
+    <section class="left-column">
+      <div class="intro">
+        <div class="eyebrow">PRODUCT MANAGEMENT · 2-WEEK SPRINT</div>
+        <h1>次のスプリントを、<br><em>対話から組み立てる。</em></h1>
+        <p>チームのキャパシティとバックログの優先度をもとに、AIエージェントがスプリント案を提案します。</p>
+      </div>
+      <section class="card resource-card" aria-labelledby="resources-title">
+        <div class="card-heading"><div><div class="section-kicker">01 / INPUT</div><h2 id="resources-title">チームリソース</h2></div><span class="muted">次の10稼働日</span></div>
+        <div class="resource-grid">
+          <label>チーム人数 <span class="input-wrap"><input id="members" type="number" min="1" max="30" value="5"><span>人</span></span></label>
+          <label>稼働率 <span class="input-wrap"><input id="availability" type="number" min="10" max="100" step="5" value="70"><span>%</span></span></label>
+          <label>直近ベロシティ <span class="input-wrap"><input id="velocity" type="number" min="1" max="300" value="32"><span>SP</span></span></label>
+        </div>
+        <div class="capacity-line"><span>今回の計画上限</span><strong id="capacity">32 <small>SP</small></strong></div>
+        <p class="hint">直近ベロシティと「人数 × 10日 × 稼働率」の小さい方を使用</p>
+      </section>
+      <section class="card backlog-card" aria-labelledby="backlog-title">
+        <div class="card-heading"><div><div class="section-kicker">02 / BACKLOG</div><h2 id="backlog-title">Jira バックログ <span id="issue-count">100</span></h2></div><span class="muted">モックデータ</span></div>
+        <div class="filters"><input id="search" type="search" placeholder="タスク名・キーで検索" aria-label="バックログ検索"><select id="priority" aria-label="優先度で絞り込み"><option value="">すべての優先度</option><option>Highest</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+        <div class="sort-row"><label for="sort">並び替え</label><select id="sort"><option value="key-asc">キー：昇順</option><option value="key-desc">キー：降順</option><option value="priority-high">優先度：高い順</option><option value="priority-low">優先度：低い順</option><option value="sp-asc">SP：小さい順</option><option value="sp-desc">SP：大きい順</option></select></div>
+        <div class="table-scroll"><table><thead><tr><th>キー / タスク</th><th>優先度</th><th>SP</th></tr></thead><tbody id="backlog-body"></tbody></table></div>
+      </section>
+    </section>
+    <section class="right-column">
+      <section class="card chat-card" aria-labelledby="chat-title">
+        <div class="chat-header"><div><div class="section-kicker">03 / AGENT</div><h2 id="chat-title">プランニング・チャット</h2></div><div id="api-status" class="status"><span></span>確認中</div></div>
+        <div id="messages" class="messages" aria-live="polite"><div class="message assistant"><div class="avatar">✦</div><div class="bubble">こんにちは。次の2週間スプリントを一緒に考えます。チームの条件を確認して、「スプリント案を作成」を押してください。</div></div></div>
+        <div class="composer-area"><button id="plan-button" class="suggestion" type="button">✦ スプリント案を作成</button><form id="chat-form"><textarea id="prompt" rows="2" placeholder="例：検索機能に絞って計画を作って" aria-label="メッセージ"></textarea><button id="send-button" type="submit" aria-label="送信">➤</button></form><div class="composer-hint">Enter で送信 · Shift + Enter で改行</div></div>
+      </section>
+      <section id="plan-card" class="card plan-card hidden" aria-labelledby="plan-title"><div class="card-heading"><div><div class="section-kicker">04 / SPRINT DRAFT</div><h2 id="plan-title">スプリントバックログ案</h2></div><strong id="plan-total"></strong></div><div id="plan-summary" class="plan-summary"></div><div id="plan-list" class="plan-list"></div></section>
+    </section>
+  </main>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

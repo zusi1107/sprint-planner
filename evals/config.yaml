@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Sprint Planner / 2週間スプリント案 / 2ケース
+prompts:
+  - '{{case_id}}'
+providers:
+  - id: file://provider.py:call_api
+    label: sprint-planner-agent
+    config:
+      timeout: 120000
+defaultTest:
+  assert:
+    - type: python
+      value: file://assertions.py:plan_matches
+    - type: python
+      value: file://assertions.py:explanation_mentions_capacity
+tests: file://cases.yaml
+evaluateOptions:
+  maxConcurrency: 1

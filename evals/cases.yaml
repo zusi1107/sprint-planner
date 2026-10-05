@@ -1,0 +1,49 @@
+- description: P01 | 全バックログから32SPのスプリント案
+  vars:
+    case_id: P01
+    input:
+      message: 現在のチームリソースと優先度を考慮して、次の2週間スプリント案を作成してください。
+      members: 5
+      availability: 0.7
+      velocity: 32
+    expected:
+      capacity_sp: 32
+      selected_sp: 32
+      focus: ''
+      keys:
+        - SPR-001
+        - SPR-018
+        - SPR-037
+        - SPR-068
+        - SPR-087
+        - SPR-009
+        - SPR-011
+        - SPR-040
+        - SPR-042
+        - SPR-059
+        - SPR-061
+        - SPR-078
+        - SPR-014
+        - SPR-033
+        - SPR-050
+        - SPR-052
+        - SPR-006
+
+- description: P02 | 検索テーマだけで12SPのスプリント案
+  vars:
+    case_id: P02
+    input:
+      message: 次の2週間は検索機能だけに集中したいです。検索テーマのバックログからスプリント案を作ってください。
+      members: 3
+      availability: 0.6
+      velocity: 12
+    expected:
+      capacity_sp: 12
+      selected_sp: 12
+      focus: 検索
+      keys:
+        - SPR-024
+        - SPR-025
+        - SPR-028
+        - SPR-021
+        - SPR-030

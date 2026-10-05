@@ -1,0 +1,23 @@
+# Local credentials
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node and Promptfoo
+node_modules/
+evals/output/
+.promptfoo/
+
+# OS and logs
+.DS_Store
+*.log
