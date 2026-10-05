@@ -31,8 +31,7 @@
       <section class="card backlog-card" aria-labelledby="backlog-title">
         <div class="card-heading"><div><div class="section-kicker">02 / BACKLOG</div><h2 id="backlog-title">Jira バックログ <span id="issue-count">100</span></h2></div><span class="muted">モックデータ</span></div>
         <div class="filters"><input id="search" type="search" placeholder="タスク名・キーで検索" aria-label="バックログ検索"><select id="priority" aria-label="優先度で絞り込み"><option value="">すべての優先度</option><option>Highest</option><option>High</option><option>Medium</option><option>Low</option></select></div>
-        <div class="sort-row"><label for="sort">並び替え</label><select id="sort"><option value="key-asc">キー：昇順</option><option value="key-desc">キー：降順</option><option value="priority-high">優先度：高い順</option><option value="priority-low">優先度：低い順</option><option value="sp-asc">SP：小さい順</option><option value="sp-desc">SP：大きい順</option></select></div>
-        <div class="table-scroll"><table><thead><tr><th>キー / タスク</th><th>優先度</th><th>SP</th></tr></thead><tbody id="backlog-body"></tbody></table></div>
+        <div class="table-scroll"><table><thead><tr><th aria-sort="ascending"><button class="sort-header" type="button" data-sort="key">キー / タスク <span class="sort-arrow" aria-hidden="true">↑</span></button></th><th aria-sort="none"><button class="sort-header" type="button" data-sort="priority">優先度 <span class="sort-arrow" aria-hidden="true">↕</span></button></th><th aria-sort="none"><button class="sort-header" type="button" data-sort="sp">SP <span class="sort-arrow" aria-hidden="true">↕</span></button></th></tr></thead><tbody id="backlog-body"></tbody></table></div>
       </section>
     </section>
     <section class="right-column">

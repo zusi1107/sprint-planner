@@ -47,3 +47,46 @@
         - SPR-028
         - SPR-021
         - SPR-030
+
+- description: P03 | 20SPではHighestを全件収容できず、未確定として警告
+  vars:
+    case_id: P03
+    input:
+      message: 現在のチームリソースと優先度を考慮して、次の2週間のスプリントを20SPで確定してください。
+      members: 5
+      availability: 0.7
+      velocity: 20
+    expected:
+      capacity_sp: 20
+      selected_sp: 20
+      focus: ''
+      keys:
+        - SPR-001
+        - SPR-018
+        - SPR-037
+        - SPR-068
+        - SPR-087
+        - SPR-009
+        - SPR-011
+        - SPR-040
+        - SPR-042
+        - SPR-059
+        - SPR-061
+        - SPR-078
+        - SPR-006
+      missing_highest_keys:
+        - SPR-005
+        - SPR-014
+        - SPR-024
+        - SPR-027
+        - SPR-033
+        - SPR-046
+        - SPR-050
+        - SPR-052
+        - SPR-055
+        - SPR-065
+        - SPR-074
+        - SPR-083
+        - SPR-093
+        - SPR-096
+        - SPR-100

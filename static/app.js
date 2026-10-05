@@ -2,6 +2,8 @@ const $ = (selector) => document.querySelector(selector);
 let backlog = [];
 let history = [];
 let busy = false;
+let sortColumn = 'key';
+let sortDirection = 'asc';
 
 function resources() {
   const members = Number($('#members').value);
@@ -44,15 +46,18 @@ function renderBacklog() {
   const priority = $('#priority').value;
   const visible = backlog.filter((issue) => (!priority || issue.priority === priority) && `${issue.key} ${issue.summary}`.toLowerCase().includes(search));
   const priorityOrder = { Highest: 0, High: 1, Medium: 2, Low: 3 };
-  const sort = $('#sort').value;
   visible.sort((a, b) => {
-    if (sort === 'key-desc') return b.key.localeCompare(a.key);
-    if (sort === 'priority-high') return priorityOrder[a.priority] - priorityOrder[b.priority] || a.key.localeCompare(b.key);
-    if (sort === 'priority-low') return priorityOrder[b.priority] - priorityOrder[a.priority] || a.key.localeCompare(b.key);
-    if (sort === 'sp-asc') return a.story_points - b.story_points || a.key.localeCompare(b.key);
-    if (sort === 'sp-desc') return b.story_points - a.story_points || a.key.localeCompare(b.key);
-    return a.key.localeCompare(b.key);
+    let comparison = 0;
+    if (sortColumn === 'key') comparison = a.key.localeCompare(b.key);
+    if (sortColumn === 'priority') comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
+    if (sortColumn === 'sp') comparison = a.story_points - b.story_points;
+    return (sortDirection === 'asc' ? comparison : -comparison) || a.key.localeCompare(b.key);
   });
+  for (const button of document.querySelectorAll('.sort-header')) {
+    const active = button.dataset.sort === sortColumn;
+    button.closest('th').setAttribute('aria-sort', active ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none');
+    button.querySelector('.sort-arrow').textContent = active ? (sortDirection === 'asc' ? '↑' : '↓') : '↕';
+  }
   $('#issue-count').textContent = visible.length;
   const body = $('#backlog-body');
   body.replaceChildren();
@@ -129,7 +134,13 @@ async function send(message) {
 for (const id of ['members', 'availability', 'velocity']) $(`#${id}`).addEventListener('input', updateCapacity);
 $('#search').addEventListener('input', renderBacklog);
 $('#priority').addEventListener('change', renderBacklog);
-$('#sort').addEventListener('change', renderBacklog);
+for (const button of document.querySelectorAll('.sort-header')) {
+  button.addEventListener('click', () => {
+    if (sortColumn === button.dataset.sort) sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    else { sortColumn = button.dataset.sort; sortDirection = 'asc'; }
+    renderBacklog();
+  });
+}
 $('#plan-button').addEventListener('click', () => send('現在のチームリソースと優先度を考慮して、次の2週間スプリント案を作成してください。'));
 $('#chat-form').addEventListener('submit', (event) => { event.preventDefault(); send($('#prompt').value); });
 $('#prompt').addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#chat-form').requestSubmit(); } });

@@ -19,6 +19,6 @@ uv run uvicorn app:app --host 127.0.0.1 --port 8767
 2. `planner.py` — SP上限と優先度を守る計画Tool
 3. `app.py` — `chat()` の Responses API / Tool 呼び出しループ
 4. `static/` — チャットとバックログ表示
-5. `evals/` — Promptfooで実Agentを評価する2ケース（[実行手順](evals/README.md)）
+5. `evals/` — Promptfooで実Agentを評価する3ケース（[実行手順](evals/README.md)）
 
 計画は優先度順、同順位では小さいSP順に詰めます。SP上限は「直近ベロシティ」と「人数 × 10日 × 稼働率」の小さい方です。1稼働日=1SPは演習用の仮定です。依存関係・担当者割当・Jira連携はまだ扱いません。AI APIの利用料は発生します。

@@ -60,3 +60,33 @@ def explanation_mentions_capacity(output, context):
     if not any(word in reply for word in ("確認", "見積", "依存")):
         errors.append("チームで確認すべき点への言及がありません")
     return result(errors, "件数・SP・優先度・確認事項を説明")
+
+
+def warns_when_highest_missing(output, context):
+    """Highestが入り切らないケースで、未確定と不足をユーザーに伝える。"""
+    expected = context["vars"]["expected"]
+    if "missing_highest_keys" not in expected:
+        return result([], "Highest不足の警告はこのケースの評価対象外")
+
+    actual = json.loads(output)
+    plan = actual.get("plan")
+    if not plan:
+        return result(["draft_sprintの結果がありません"], "")
+
+    selected_keys = {issue.get("key") for issue in plan.get("issues", [])}
+    missing_keys = {issue["key"] for issue in BACKLOG if issue["priority"] == "Highest"} - selected_keys
+    reply = actual.get("reply") or ""
+    errors = []
+    if missing_keys != set(expected["missing_highest_keys"]):
+        errors.append(f"未収容のHighest: 期待{expected['missing_highest_keys']}、実際{sorted(missing_keys)}")
+    if "Highest" not in reply:
+        errors.append("HighestのJiraが入り切らないことを警告していません")
+    if not re.search(rf"{len(missing_keys)}\s*件", reply):
+        errors.append(f"未収容のHighest {len(missing_keys)}件を伝えていません")
+    if not re.search(r"(?:未確定|確定(?:できません|できない|しません|しない|せず|不可|前|は見送|を見送|はできない|はできません|はしない|はしません|ではありません))", reply):
+        errors.append("スプリントを確定しないことを明示していません")
+    if re.search(r"(?<!未)確定(?:しました|します|済み|済|です)", reply):
+        errors.append("スプリントを確定したと回答しています")
+    if not any(word in reply for word in ("優先順位", "優先度", "スコープ", "対象", "キャパシティ", "ベロシティ")) or not any(word in reply for word in ("確認", "調整", "見直")):
+        errors.append("ユーザーに優先順位やスコープの確認・調整を促していません")
+    return result(errors, f"Highestの未収容{len(missing_keys)}件を警告し、スプリントを未確定と説明")

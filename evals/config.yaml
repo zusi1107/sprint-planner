@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
-description: Sprint Planner / 2週間スプリント案 / 2ケース
+description: Sprint Planner / 2週間スプリント案 / 3ケース
 prompts:
   - '{{case_id}}'
 providers:
@@ -13,6 +13,8 @@ defaultTest:
       value: file://assertions.py:plan_matches
     - type: python
       value: file://assertions.py:explanation_mentions_capacity
+    - type: python
+      value: file://assertions.py:warns_when_highest_missing
 tests: file://cases.yaml
 evaluateOptions:
   maxConcurrency: 1
